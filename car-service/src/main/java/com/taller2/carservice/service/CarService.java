@@ -3,11 +3,13 @@ package com.taller2.carservice.service;
 import com.taller2.carservice.entity.Car;
 import com.taller2.carservice.repository.CarRepository;
 import org.hibernate.service.spi.ServiceException;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Service
 public class CarService {
 
     private final CarRepository carRepository;
