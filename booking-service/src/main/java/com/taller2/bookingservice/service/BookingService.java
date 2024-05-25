@@ -1,14 +1,13 @@
 package com.taller2.bookingservice.service;
 
-import com.taller2.bookingservice.repository.BookingRepository;
-import org.springframework.stereotype.Service;
+import com.taller2.bookingservice.dto.BookingDto;
+import com.taller2.bookingservice.dto.BookingToSaveDto;
+import com.taller2.bookingservice.entity.Booking;
 
-@Service
-public class BookingService {
+import java.util.UUID;
 
-    private final BookingRepository bookingRepository;
+public interface BookingService {
 
-    public BookingService(BookingRepository bookingRepository) {
-        this.bookingRepository = bookingRepository;
-    }
+    BookingDto crearBooking (BookingToSaveDto bookingToSaveDto);
+    BookingDto buscarBookingById(UUID id);
 }
