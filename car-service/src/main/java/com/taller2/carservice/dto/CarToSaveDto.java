@@ -1,9 +1,6 @@
 package com.taller2.carservice.dto;
 
-import java.util.UUID;
-
-public record CarDto(
-        UUID id,
+public record CarToSaveDto(
         String model,
         String maker,
         Boolean available

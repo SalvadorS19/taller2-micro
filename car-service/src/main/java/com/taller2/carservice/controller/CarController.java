@@ -1,7 +1,7 @@
 package com.taller2.carservice.controller;
 
 import com.taller2.carservice.entity.Car;
-import com.taller2.carservice.service.CarService;
+import com.taller2.carservice.service.CarServiceImpl;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,25 +12,25 @@ import java.util.UUID;
 @RequestMapping("/car")
 public class CarController {
 
-    private final CarService carService;
+    private final CarServiceImpl carServiceImpl;
 
-    public CarController(CarService carService) {
-        this.carService = carService;
+    public CarController(CarServiceImpl carServiceImpl) {
+        this.carServiceImpl = carServiceImpl;
     }
 
     public Car createCar(Car car) {
-        return carService.createCar(car);
+        return carServiceImpl.createCar(car);
     }
 
     public List<Car> availableCars() {
-        return carService.getAllAvailableCars();
+        return carServiceImpl.getAllAvailableCars();
     }
 
-    public Car reserveCar() {
-        return carService.reserveCar();
+    public Car reserveCar(UUID id) {
+        return carServiceImpl.reserveCar(id);
     }
 
     public Car returnCar(UUID id) {
-        return carService.returnCar(id);
+        return carServiceImpl.returnCar(id);
     }
 }
