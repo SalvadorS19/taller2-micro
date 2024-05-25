@@ -14,4 +14,9 @@ public class BookingController {
         this.bookingService = bookingService;
     }
 
+    @GetMapping("/hola")
+    public String hola() {
+        return "Hola";
+    }
+
 }
