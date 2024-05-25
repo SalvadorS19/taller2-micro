@@ -1,14 +1,12 @@
 package com.taller2.paymentservice.service;
 
-import com.taller2.paymentservice.repository.PaymentRepository;
-import org.springframework.stereotype.Service;
+import com.taller2.paymentservice.dto.PaymentCreateDTO;
+import com.taller2.paymentservice.dto.PaymentDTO;
+import java.util.UUID;
 
-@Service
-public class PaymentService {
+public interface PaymentService {
 
-    private final PaymentRepository paymentRepository;
+    PaymentDTO processPayment(PaymentCreateDTO paymentCreateDTO);
 
-    public PaymentService(PaymentRepository paymentRepository) {
-        this.paymentRepository = paymentRepository;
-    }
+    PaymentDTO getPaymentById(UUID id);
 }
