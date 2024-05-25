@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+        routes:
+          - id: booking-service
+            predicates:
+              - Path=/booking/**
+            uri: http://localhost:8081
+          - id: car-service
+            predicates:
+              - Path=/car/**
+            uri: http://localhost:8082
+          - id : customer-service
+            predicates:
+              - Path=/customer/**
+            uri: http://localhost:8083
+          - id: payment-service
+            predicates:
+              - Path=/payment/**
+            uri: http://localhost:8084
