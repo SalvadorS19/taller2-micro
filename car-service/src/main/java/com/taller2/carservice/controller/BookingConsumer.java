@@ -12,8 +12,8 @@ import java.util.UUID;
 
 @FeignClient(name = "booking-service", url = "http://localhost:8081")
 public interface BookingConsumer {
-    @PutMapping("/booking/updateStatus")
-    BookingDto updateStatus(@RequestParam UUID id, @RequestParam BookingStatus status);
+    @PutMapping("/booking/updateStatusByCar")
+    BookingDto updateStatusByCar(@RequestParam UUID id, @RequestParam BookingStatus status);
     @GetMapping("/booking/byCar/{id}")
     BookingDto findByCarId(@PathVariable UUID id);
 }

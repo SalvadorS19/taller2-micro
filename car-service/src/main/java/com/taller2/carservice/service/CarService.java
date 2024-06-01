@@ -9,7 +9,7 @@ import java.util.UUID;
 public interface CarService {
 
     CarDto create(CarToSaveDto car);
-    CarDto findbyId(UUID id);
+    CarDto findById(UUID id);
     List<CarDto> findAll();
     void delete(UUID id);
     List<CarDto> getAllAvailableCars();

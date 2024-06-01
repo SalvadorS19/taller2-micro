@@ -1,7 +1,6 @@
 package com.taller2.carservice.service;
 
 import com.taller2.carservice.controller.BookingConsumer;
-import com.taller2.carservice.dto.BookingDto;
 import com.taller2.carservice.dto.CarDto;
 import com.taller2.carservice.dto.CarMapper;
 import com.taller2.carservice.dto.CarToSaveDto;
@@ -39,9 +38,9 @@ public class CarServiceImpl implements CarService{
     }
 
     @Override
-    public CarDto findbyId(UUID id) {
+    public CarDto findById(UUID id) {
         Car car = carRepository.findById(id)
-                .orElseThrow(() -> new ServiceException("No se encontro vehiculo"));
+                .orElseThrow(() -> new ServiceException("No se encontró el vehiculo"));
         return carMapper.carToCarDto(car);
     }
 
@@ -61,27 +60,26 @@ public class CarServiceImpl implements CarService{
 
     public CarDto reserveCar(UUID id) {
         Car car = carRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("No se encontro vehiculo"));
+                .orElseThrow(() -> new ServiceException("No se encontró el vehiculo"));
         if (car.getAvailable()){
             car.setAvailable(false);
             car = carRepository.save(car);
             return carMapper.carToCarDto(car);
         } else {
-            throw new RuntimeException("El carro no se encuentra disponible");
+            throw new ServiceException("El carro no se encuentra disponible");
         }
     }
 
     public CarDto returnCar(UUID id) {
         Car car = carRepository.findById(id)
-                .orElseThrow(()-> new ServiceException("No se encontro vehiculo"));
+                .orElseThrow(()-> new ServiceException("No se encontró el vehiculo"));
         if (!car.getAvailable()){
             car.setAvailable(true);
-            BookingDto booking = bookingConsumer.findByCarId(car.getId());
             car = carRepository.save(car);
-            bookingConsumer.updateStatus(booking.id(), BookingStatus.COMPLETED);
+            bookingConsumer.updateStatusByCar(car.getId(), BookingStatus.COMPLETED);
             return carMapper.carToCarDto(car);
         } else {
-            throw new RuntimeException("El carro no ha sido ocupado");
+            throw new ServiceException("El carro no ha sido ocupado");
         }
     }
 }

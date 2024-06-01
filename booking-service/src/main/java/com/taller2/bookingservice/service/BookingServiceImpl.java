@@ -7,6 +7,7 @@ import com.taller2.bookingservice.dto.BookingToSaveDto;
 import com.taller2.bookingservice.entity.Booking;
 import com.taller2.bookingservice.entity.BookingStatus;
 import com.taller2.bookingservice.repository.BookingRepository;
+import feign.FeignException;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.stereotype.Service;
 
@@ -33,14 +34,15 @@ public class BookingServiceImpl implements BookingService{
                 .carId(booking.carId())
                 .customerId(booking.customerId())
                 .startDate(LocalDateTime.now())
-                .endDate(booking.endDate())
-                .status(BookingStatus.CONFIRMED)
                 .build();
-        bookingToSave = bookingRepository.save(bookingToSave);
         try {
             carConsumer.reserveCar(booking.carId());
-        } catch (ServiceException e) {
-            throw new ServiceException("El vehiculo ya se encuentra reservado");
+            bookingToSave.setStatus(BookingStatus.CONFIRMED);
+            bookingToSave = bookingRepository.save(bookingToSave);
+        } catch (FeignException e) {
+            bookingToSave.setStatus(BookingStatus.FAILED);
+            bookingRepository.save(bookingToSave);
+            throw new ServiceException("No se pudo reservar el vehiculo");
         }
         return bookingMapper.bookingToBookingDto(bookingToSave);
     }
@@ -48,7 +50,7 @@ public class BookingServiceImpl implements BookingService{
     @Override
     public BookingDto findById(UUID id) {
         Booking booking = bookingRepository.findById(id)
-                .orElseThrow(()-> new ServiceException("No se encontro la reserva"));
+                .orElseThrow(()-> new ServiceException("No se encontró la reserva"));
         return bookingMapper.bookingToBookingDto(booking);
     }
 
@@ -63,10 +65,13 @@ public class BookingServiceImpl implements BookingService{
     }
 
     @Override
-    public BookingDto updateStatus(UUID id, BookingStatus status) {
-        Booking booking = bookingRepository.findById(id)
-                .orElseThrow(()-> new ServiceException("No se encontro la reserva"));
-        booking.setStatus(status);
+    public BookingDto updateStatusByCar(UUID carId, BookingStatus newStatus) {
+        Booking booking = bookingRepository.findByCarId(carId)
+                .orElseThrow(()-> new ServiceException("No se encontró la reserva"));
+        booking.setStatus(newStatus);
+        if (newStatus.equals(BookingStatus.COMPLETED)) {
+            booking.setEndDate(LocalDateTime.now());
+        }
         booking = bookingRepository.save(booking);
         return bookingMapper.bookingToBookingDto(booking);
     }
@@ -74,7 +79,7 @@ public class BookingServiceImpl implements BookingService{
     @Override
     public BookingDto findByCarId(UUID id) {
         Booking booking = bookingRepository.findByCarId(id)
-                .orElseThrow(()-> new ServiceException("No se encontro la reserva"));
+                .orElseThrow(()-> new ServiceException("No se encontró la reserva"));
         return bookingMapper.bookingToBookingDto(booking);
     }
 }

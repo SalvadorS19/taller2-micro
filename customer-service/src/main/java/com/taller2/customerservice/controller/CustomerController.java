@@ -1,7 +1,7 @@
 package com.taller2.customerservice.controller;
 
-import com.taller2.customerservice.dto.CustomerDTO;
-import com.taller2.customerservice.dto.CustomerToSaveDTO;
+import com.taller2.customerservice.dto.CustomerDto;
+import com.taller2.customerservice.dto.CustomerToSaveDto;
 import com.taller2.customerservice.service.CustomerService;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +19,7 @@ public class CustomerController {
     }
 
     @PostMapping
-    public CustomerDTO create(@RequestBody CustomerToSaveDTO customerToSaveDTO) {
+    public CustomerDto create(@RequestBody CustomerToSaveDto customerToSaveDTO) {
         return customerService.createCustomer(customerToSaveDTO);
     }
 
@@ -29,12 +29,12 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    public CustomerDTO findById(@PathVariable UUID id) {
+    public CustomerDto findById(@PathVariable UUID id) {
         return customerService.findCustomer(id);
     }
 
     @GetMapping
-    public List<CustomerDTO> findAll() {
+    public List<CustomerDto> findAll() {
         return customerService.findAllCustomers();
     }
 }

@@ -44,8 +44,8 @@ public class BookingController {
         bookingService.deleteById(id);
     }
 
-    @PutMapping("/updateStatus")
-    BookingDto updateStatus(@RequestParam UUID id, @RequestParam BookingStatus status) {
-        return bookingService.updateStatus(id, status);
+    @PutMapping("/updateStatusByCar")
+    BookingDto updateStatusByCar(@RequestParam UUID id, @RequestParam BookingStatus status) {
+        return bookingService.updateStatusByCar(id, status);
     }
 }

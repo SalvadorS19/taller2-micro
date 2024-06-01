@@ -2,10 +2,7 @@ package com.taller2.carservice.controller;
 
 import com.taller2.carservice.dto.CarDto;
 import com.taller2.carservice.dto.CarToSaveDto;
-import com.taller2.carservice.entity.Car;
 import com.taller2.carservice.service.CarService;
-import com.taller2.carservice.service.CarServiceImpl;
-import org.hibernate.service.spi.ServiceException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,7 +25,7 @@ public class CarController {
 
     @GetMapping("/{id}")
     public CarDto findbyId(@PathVariable UUID id) {
-        return carService.findbyId(id);
+        return carService.findById(id);
     }
 
     @GetMapping

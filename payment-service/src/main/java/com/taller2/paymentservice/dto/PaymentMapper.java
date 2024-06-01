@@ -7,6 +7,6 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface PaymentMapper {
-    PaymentDTO paymentToPaymentDTO(Payment payment);
-    List<PaymentDTO> paymentsToPaymentDTOs(List<Payment> payments);
+    PaymentDto paymentToPaymentDTO(Payment payment);
+    List<PaymentDto> paymentsToPaymentDTOs(List<Payment> payments);
 }

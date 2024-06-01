@@ -5,7 +5,6 @@ import com.taller2.bookingservice.dto.BookingToSaveDto;
 import com.taller2.bookingservice.entity.BookingStatus;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface BookingService {
@@ -13,6 +12,6 @@ public interface BookingService {
     BookingDto findById(UUID id);
     List<BookingDto> findAll();
     void deleteById(UUID id);
-    BookingDto updateStatus(UUID id, BookingStatus status);
+    BookingDto updateStatusByCar(UUID cardId, BookingStatus status);
     BookingDto findByCarId(UUID id);
 }

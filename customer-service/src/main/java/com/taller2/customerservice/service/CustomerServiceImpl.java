@@ -1,8 +1,8 @@
 package com.taller2.customerservice.service;
 
+import com.taller2.customerservice.dto.CustomerDto;
 import com.taller2.customerservice.dto.CustomerMapper;
-import com.taller2.customerservice.dto.CustomerToSaveDTO;
-import com.taller2.customerservice.dto.CustomerDTO;
+import com.taller2.customerservice.dto.CustomerToSaveDto;
 import com.taller2.customerservice.entity.Customer;
 import com.taller2.customerservice.repository.CustomerRepository;
 import org.hibernate.service.spi.ServiceException;
@@ -22,25 +22,25 @@ public class CustomerServiceImpl implements CustomerService {
         this.customerMapper = customerMapper;
     }
 
-    public CustomerDTO createCustomer(CustomerToSaveDTO customerToSaveDTO) {
-        Customer customer = Customer.builder()
-                .fullName(customerToSaveDTO.fullName())
+    public CustomerDto createCustomer(CustomerToSaveDto customer) {
+        Customer customerToSave = Customer.builder()
+                .fullName(customer.fullName())
                 .build();
-        customerRepository.save(customer);
-        return customerMapper.customerToCustomerDTO(customer);
+        customerToSave = customerRepository.save(customerToSave);
+        return customerMapper.customerToCustomerDTO(customerToSave);
     }
 
     public void deleteCustomer(UUID id) {
         customerRepository.deleteById(id);
     }
 
-    public CustomerDTO findCustomer(UUID id) {
+    public CustomerDto findCustomer(UUID id) {
         Customer customer = customerRepository.findById(id)
-                .orElseThrow(()-> new ServiceException("Customer not found"));
+                .orElseThrow(()-> new ServiceException("Cliente no encontrado"));
         return customerMapper.customerToCustomerDTO(customer);
     }
 
-    public List<CustomerDTO> findAllCustomers() {
+    public List<CustomerDto> findAllCustomers() {
         return customerMapper.customerListToCustomerDTOList(customerRepository.findAll());
     }
 }

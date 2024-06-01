@@ -1,6 +1,6 @@
 package com.taller2.customerservice.dto;
 
-public record CustomerToSaveDTO(
+public record CustomerToSaveDto(
         String fullName
 ) {
 }

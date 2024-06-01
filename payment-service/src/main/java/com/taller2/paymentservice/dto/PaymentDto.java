@@ -5,7 +5,7 @@ import com.taller2.paymentservice.entity.PaymentStatus;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public record PaymentDTO(
+public record PaymentDto(
         UUID id,
         UUID bookingId,
         String creditCard,
