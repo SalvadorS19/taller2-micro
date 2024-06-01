@@ -1,9 +1,12 @@
 package com.taller2.carservice.controller;
 
+import com.taller2.carservice.dto.CarDto;
+import com.taller2.carservice.dto.CarToSaveDto;
 import com.taller2.carservice.entity.Car;
+import com.taller2.carservice.service.CarService;
 import com.taller2.carservice.service.CarServiceImpl;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.hibernate.service.spi.ServiceException;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -12,25 +15,44 @@ import java.util.UUID;
 @RequestMapping("/car")
 public class CarController {
 
-    private final CarServiceImpl carServiceImpl;
+    private final CarService carService;
 
-    public CarController(CarServiceImpl carServiceImpl) {
-        this.carServiceImpl = carServiceImpl;
+    public CarController(CarService carService) {
+        this.carService = carService;
     }
 
-    public Car createCar(Car car) {
-        return carServiceImpl.createCar(car);
+    @PostMapping
+    public CarDto create(@RequestBody CarToSaveDto car) {
+        return carService.create(car);
     }
 
-    public List<Car> availableCars() {
-        return carServiceImpl.getAllAvailableCars();
+    @GetMapping("/{id}")
+    public CarDto findbyId(@PathVariable UUID id) {
+        return carService.findbyId(id);
     }
 
-    public Car reserveCar(UUID id) {
-        return carServiceImpl.reserveCar(id);
+    @GetMapping
+    public List<CarDto> findAll() {
+        return carService.findAll();
     }
 
-    public Car returnCar(UUID id) {
-        return carServiceImpl.returnCar(id);
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable UUID id) {
+        carService.delete(id);
+    }
+
+    @GetMapping("/listAvailableCar")
+    public List<CarDto> getAllAvailableCars() {
+        return carService.getAllAvailableCars();
+    }
+
+    @PostMapping("/reserve/{id}")
+    public CarDto reserveCar(@PathVariable UUID id) {
+        return carService.reserveCar(id);
+    }
+
+    @PostMapping("/return/{id}")
+    public CarDto returnCar(@PathVariable UUID id) {
+        return carService.returnCar(id);
     }
 }

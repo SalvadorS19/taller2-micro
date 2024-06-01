@@ -7,6 +7,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface CarRepository extends JpaRepository<Car, UUID> {
-
-    public List<Car> findByAvailableTrue();
+    List<Car> findByAvailableTrue();
 }
