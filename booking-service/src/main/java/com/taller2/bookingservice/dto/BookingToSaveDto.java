@@ -7,7 +7,6 @@ import java.util.UUID;
 
 public record BookingToSaveDto(
         UUID carId,
-        UUID customerId,
-        LocalDateTime endDate
+        UUID customerId
 ) {
 }

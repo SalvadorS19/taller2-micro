@@ -34,16 +34,14 @@ public class BookingServiceImpl implements BookingService{
                 .carId(booking.carId())
                 .customerId(booking.customerId())
                 .startDate(LocalDateTime.now())
+                .status(BookingStatus.CONFIRMED)
                 .build();
         try {
             carConsumer.reserveCar(booking.carId());
-            bookingToSave.setStatus(BookingStatus.CONFIRMED);
-            bookingToSave = bookingRepository.save(bookingToSave);
         } catch (FeignException e) {
-            bookingToSave.setStatus(BookingStatus.FAILED);
-            bookingRepository.save(bookingToSave);
             throw new ServiceException("No se pudo reservar el vehiculo");
         }
+        bookingToSave = bookingRepository.save(bookingToSave);
         return bookingMapper.bookingToBookingDto(bookingToSave);
     }
 
