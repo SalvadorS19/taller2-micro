@@ -37,7 +37,11 @@ public class BookingServiceImpl implements BookingService{
                 .status(BookingStatus.CONFIRMED)
                 .build();
         bookingToSave = bookingRepository.save(bookingToSave);
-        carConsumer.reserveCar(booking.carId());
+        try {
+            carConsumer.reserveCar(booking.carId());
+        } catch (ServiceException e) {
+            throw new ServiceException("El vehiculo ya se encuentra reservado");
+        }
         return bookingMapper.bookingToBookingDto(bookingToSave);
     }
 
@@ -56,6 +60,22 @@ public class BookingServiceImpl implements BookingService{
     @Override
     public void deleteById(UUID id) {
         bookingRepository.deleteById(id);
+    }
+
+    @Override
+    public BookingDto updateStatus(UUID id, BookingStatus status) {
+        Booking booking = bookingRepository.findById(id)
+                .orElseThrow(()-> new ServiceException("No se encontro la reserva"));
+        booking.setStatus(status);
+        booking = bookingRepository.save(booking);
+        return bookingMapper.bookingToBookingDto(booking);
+    }
+
+    @Override
+    public BookingDto findByCarId(UUID id) {
+        Booking booking = bookingRepository.findByCarId(id)
+                .orElseThrow(()-> new ServiceException("No se encontro la reserva"));
+        return bookingMapper.bookingToBookingDto(booking);
     }
 }
 

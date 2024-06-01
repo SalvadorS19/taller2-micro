@@ -1,8 +1,11 @@
 package com.taller2.carservice.service;
 
+import com.taller2.carservice.controller.BookingConsumer;
+import com.taller2.carservice.dto.BookingDto;
 import com.taller2.carservice.dto.CarDto;
 import com.taller2.carservice.dto.CarMapper;
 import com.taller2.carservice.dto.CarToSaveDto;
+import com.taller2.carservice.entity.BookingStatus;
 import com.taller2.carservice.entity.Car;
 import com.taller2.carservice.repository.CarRepository;
 import org.hibernate.service.spi.ServiceException;
@@ -16,10 +19,12 @@ public class CarServiceImpl implements CarService{
 
     private final CarRepository carRepository;
     private final CarMapper carMapper;
+    private final BookingConsumer bookingConsumer;
 
-    public CarServiceImpl(CarRepository carRepository, CarMapper carMapper) {
+    public CarServiceImpl(CarRepository carRepository, CarMapper carMapper, BookingConsumer bookingConsumer) {
         this.carRepository = carRepository;
         this.carMapper = carMapper;
+        this.bookingConsumer = bookingConsumer;
     }
 
     @Override
@@ -71,7 +76,9 @@ public class CarServiceImpl implements CarService{
                 .orElseThrow(()-> new ServiceException("No se encontro vehiculo"));
         if (!car.getAvailable()){
             car.setAvailable(true);
+            BookingDto booking = bookingConsumer.findByCarId(car.getId());
             car = carRepository.save(car);
+            bookingConsumer.updateStatus(booking.id(), BookingStatus.COMPLETED);
             return carMapper.carToCarDto(car);
         } else {
             throw new RuntimeException("El carro no ha sido ocupado");
